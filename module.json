@@ -9,8 +9,8 @@
       "branch": "master"
     },
     {
-      "git_url": "https://github.com/infraxys-aws/aws-packer.git",
-      "branch": "master"
+      "git_url": "https://github.com/infraxys-aws/aws-packer-docker.git",
+      "branch": "docker-18.06-ubuntu-18.04"
     }
   ]
 }

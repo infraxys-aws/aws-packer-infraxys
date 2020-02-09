@@ -1,0 +1,23 @@
+export VERSION="$(cat VERSION)";
+
+function stop() {
+    docker-compose -f stack.yml stop;
+}
+
+function up() {
+    docker-compose -f stack.yml up -d;
+}
+
+function rm_containers() {
+  docker-compose -f stack.yml rm -f;
+}
+
+function reset() {
+    stop;
+    rm_containers;
+    up;
+}
+
+function pull() {
+    docker pull quay.io/jeroenmanders/docker-infraxys-webhook:${VERSION};
+}

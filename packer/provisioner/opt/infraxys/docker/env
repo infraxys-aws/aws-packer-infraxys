@@ -1,0 +1,33 @@
+
+. /opt/infraxys/config/env
+
+function stop() {
+    docker-compose -f stack.yml stop;
+}
+
+function up() {
+    docker-compose -f stack.yml up -d;
+}
+
+function rm_containers() {
+  docker-compose -f stack.yml rm -f;
+}
+
+function reset() {
+    stop;
+    rm_containers;
+    ./backup.sh false;
+    up;
+}
+
+function pull() {
+    docker pull quay.io/jeroenmanders/docker-infraxys-db:${VERSION};
+    docker pull quay.io/jeroenmanders/docker-infraxys-tomcat:${VERSION};
+    docker pull quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest
+    docker pull quay.io/jeroenmanders/infraxys-vault:latest;
+    docker pull quay.io/jeroenmanders/infraxys-web:latest;
+    docker pull quay.io/jeroenmanders/oauth2-proxy:latest;
+}
+
+export LOCAL_DIR="/opt/infraxys";
+mkdir -p "$LOCAL_DIR/run";

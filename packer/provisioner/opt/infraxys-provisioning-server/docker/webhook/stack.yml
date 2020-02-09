@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+
+  webhook:
+    image: quay.io/jeroenmanders/docker-infraxys-webhook:${VERSION}
+    restart: always
+    ports:
+      - 8081:9000
+    volumes:
+      - /opt/infraxys-provisioning-server/modules:/modules:rw
+      - /root/.ssh:/root/.ssh:ro
+    environment:
+      WEBHOOK_SECRET: mysupersecret

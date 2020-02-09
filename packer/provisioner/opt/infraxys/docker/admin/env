@@ -1,0 +1,23 @@
+
+. ../env;
+
+ADMIN_VERSION="$(cat VERSION)";
+
+function reset_admin() {
+    docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+    docker stop infraxys-admin;
+    docker rm infraxys-admin;
+    docker create \
+        --restart always \
+        --network infraxys-admin \
+        --name infraxys-admin \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        --workdir /usr/bin \
+        -v "$LOCAL_DIR/config":/opt/infraxys/config:rw \
+        -v "$LOCAL_DIR/docker":/opt/infraxys/docker:rw \
+        -p 8082:8082 \
+        quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+
+    docker network connect infraxys-vault infraxys-admin;
+    docker start infraxys-admin;
+}

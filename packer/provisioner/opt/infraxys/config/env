@@ -1,0 +1,4 @@
+for f in /opt/infraxys/config/vars/*; do
+    varname="$(echo $(basename $f))";
+    export $varname="$(cat $f)";
+done;

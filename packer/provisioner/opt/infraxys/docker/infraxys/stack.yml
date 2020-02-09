@@ -1,0 +1,111 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: quay.io/jeroenmanders/docker-infraxys-db:${VERSION}
+    container_name: infraxys-db
+    labels:
+      io.infraxys.project: "infraxys-db"
+      io.infraxys.name: "db"
+    networks:
+      - infraxys-db
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+      MYSQL_DATABASE: "infraxys"
+      MYSQL_USER: "infraxys"
+      MYSQL_PASSWORD: "infraxys"
+    volumes:
+      - ${LOCAL_DIR}/data/mysql:/var/lib/mysql:rw
+
+  tomcat:
+    image: quay.io/jeroenmanders/docker-infraxys-tomcat:${VERSION}
+    container_name: infraxys-tomcat
+    labels:
+      io.infraxys.project: "infraxys"
+      io.infraxys.name: "tomcat"
+    networks:
+      - infraxys-db
+      - infraxys-vault
+      - infraxys-log
+      - infraxys-app
+    restart: always
+    depends_on:
+      - db
+    extra_hosts:
+      - "provisioning-server:127.0.0.1"
+    environment:
+      CATALINA_OPTS: -Xmx1024m -Xms512m -XX:ThreadStackSize=500 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses -Dproperties.file=/usr/local/tomcat/conf/infraxys.properties -Dlog4j.configuration=file:/usr/local/tomcat/conf/log4j.xml
+      SERVER_NAME: ${SERVER_NAME}
+      PARENT_OS: "LINUX"
+      SERVER_REQUIRES_PROFILE: ${SERVER_REQUIRES_PROFILE}
+      INFRAXYS_MODE: "server"
+      DISABLE_ACE_EDITOR: "false"
+      HOST_ENVIRONMENTS_DIR: "${LOCAL_DIR}/environments"
+      HOST_MODULES_DIR: "${LOCAL_DIR}/modules"
+      HOST_WORK_DIR: "${LOCAL_DIR}/work"
+      INFRAXYS_MODULE_URL: "git@github.com:infraxys-modules/infraxys-core.git"
+      INFRAXYS_MODULE_BRANCH: "master"
+      SHOW_TOOLS_MENU: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${LOCAL_DIR}/config:/opt/infraxys/config:ro
+      - ${LOCAL_DIR}/upload:/opt/infraxys/upload:rw
+      - ${LOCAL_DIR}/modules:/opt/infraxys/modules:rw
+      - ${LOCAL_DIR}/environments:/opt/infraxys/environments:rw
+      - ${LOCAL_DIR}/work:/tempVolume:rw
+
+  fluentd:
+    image: quay.io/jeroenmanders/docker-infraxys-fluentd:${VERSION}
+    container_name: infraxys-fluentd
+    labels:
+      io.infraxys.project: "infraxys"
+      io.infraxys.name: "fluentd"
+    networks:
+      - infraxys-log
+    restart: always
+    volumes:
+      - ${LOCAL_DIR}/logs/fluentd:/var/log/fluent:rw
+      - ${LOCAL_DIR}/logs/config:/fluentd/etc:ro
+
+  oauth2:
+    image: quay.io/jeroenmanders/oauth2-proxy:5.0.0
+    container_name: infraxys-oauth2
+    labels:
+      io.infraxys.project: "infraxys"
+      io.infraxys.name: "oauth2"
+    networks:
+      - infraxys-oauth2
+    restart: always
+    volumes:
+      -  ${LOCAL_DIR}/config/oauth2-proxy/oauth2_proxy.cfg:/etc/oauth2_proxy.cfg:ro
+
+  web:
+    image: quay.io/jeroenmanders/infraxys-web:latest
+    container_name: infraxys-web
+    labels:
+      io.infraxys.project: "infraxys"
+      io.infraxys.name: "web"
+    restart: always
+    networks:
+      - infraxys-oauth2
+      - infraxys-app
+    ports:
+      - 8443:443
+    environment:
+      DEBUG: "false"
+      TOMCAT_INSTANCE: "tomcat"
+      OAUTH2_INSTANCE: "oauth2"
+
+networks:
+  infraxys-db:
+    external: true
+  infraxys-log:
+    external: true
+  infraxys-vault:
+    external: true
+  infraxys-oauth2:
+    external: true
+  infraxys-app:
+    external: true

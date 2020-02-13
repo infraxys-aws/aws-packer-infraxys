@@ -5,6 +5,10 @@ function stop() {
     docker-compose -f stack.yml stop;
 }
 
+function start_db() {
+  docker-compose -f stack.yml up -d db;
+}
+
 function up() {
     docker-compose -f stack.yml up -d;
 }
@@ -23,11 +27,13 @@ function reset() {
 function pull() {
     docker pull quay.io/jeroenmanders/docker-infraxys-db:${VERSION};
     docker pull quay.io/jeroenmanders/docker-infraxys-tomcat:${VERSION};
-    docker pull quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest
-    docker pull quay.io/jeroenmanders/infraxys-vault:latest;
+    docker pull quay.io/jeroenmanders/docker-infraxys-fluentd:${VERSION};
+    docker pull quay.io/jeroenmanders/infraxys-runner:${VERSION};
+    docker pull quay.io/jeroenmanders/oauth2-proxy:5.0.0;
     docker pull quay.io/jeroenmanders/infraxys-web:latest;
-    docker pull quay.io/jeroenmanders/oauth2-proxy:latest;
+    docker pull quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest;
+    docker pull quay.io/jeroenmanders/infraxys-vault:latest;
+    docker pull quay.io/jeroenmanders/infraxys-admin:latest;
 }
 
-export LOCAL_DIR="/opt/infraxys";
 mkdir -p "$LOCAL_DIR/run";

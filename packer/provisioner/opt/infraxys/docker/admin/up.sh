@@ -2,5 +2,4 @@
 
 . ./env;
 
-admin_reset;
-
+admin_up;

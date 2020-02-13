@@ -2,5 +2,4 @@
 
 . ./env;
 
-admin_reset;
-
+vault_up;

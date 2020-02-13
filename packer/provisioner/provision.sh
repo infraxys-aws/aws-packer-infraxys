@@ -20,6 +20,10 @@ sudo mkdir /opt/infraxys/data;
 sudo mkdir /opt/infraxys/data/vault;
 sudo mkdir /opt/infraxys/data/mysql;
 
+echo "Pulling latest Docker images"
+cd /opt/infraxys/docker/infraxys;
+sudo ./pull.sh;
+
 echo "Creating Docker networks";
 sudo docker network create -d bridge -o "com.docker.network.bridge.name"="infraxys-vault0" infraxys-vault;
 sudo docker network create -d bridge -o "com.docker.network.bridge.name"="infraxys-admin0" infraxys-admin;

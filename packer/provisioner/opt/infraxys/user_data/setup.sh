@@ -19,10 +19,10 @@ pwd="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)";
 echo "Setting password"
 echo "ubuntu:$pwd" | chpasswd;
 
-echo "Starting Infraxys stack";
-sudo bash -c "cd /opt/infraxys/docker/vault; ./reset_vault.sh;"
-sudo bash -c "cd /opt/infraxys/docker/infraxys; ./reset.sh;"
-sudo bash -c "cd /opt/infraxys/docker/admin; ./reset_admin.sh;"
+echo "Starting initial Infraxys stack";
+sudo bash -c "cd /opt/infraxys/docker/vault; ./up.sh;"
+sudo bash -c "cd /opt/infraxys/docker/infraxys; ./start_db.sh;"
+sudo bash -c "cd /opt/infraxys/docker/admin; ./up.sh;"
 
 #rm -Rf /opt/infraxys/user_data;
 

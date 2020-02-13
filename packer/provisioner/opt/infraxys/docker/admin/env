@@ -3,10 +3,14 @@
 
 ADMIN_VERSION="$(cat VERSION)";
 
-function reset_admin() {
+function admin_reset() {
     docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
     docker stop infraxys-admin;
     docker rm infraxys-admin;
+    admin_up;
+}
+
+function admin_up() {
     docker create \
         --restart always \
         --network infraxys-admin \

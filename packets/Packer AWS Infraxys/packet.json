@@ -6,6 +6,7 @@
   "skipEveryInstanceFiles": false,
   "limitToAllowedChildren": false,
   "autoGenerate": false,
+  "inheritFilesFromPacketGuid": "github.com\\infraxys-aws\\aws-packer\\master\\packer helper functions",
   "key": "",
   "infoHtml": "",
   "attributes": [
@@ -154,29 +155,6 @@
       "defaultValue": ""
     }
   ],
-  "files": [
-    {
-      "guid": "6cad4953-772b-48a4-9b4c-0011aa6af6c6",
-      "filename": "create_ami.sh",
-      "includeName": "Create AMI",
-      "menuCaption": "Create AMI",
-      "directory": "",
-      "runsIndependent": false,
-      "runsParallel": false,
-      "runBeforeIndependentActions": false,
-      "parseWithVelocity": true,
-      "executable": true,
-      "saveWith": "CURRENT INSTANCE",
-      "isInteractive": false,
-      "hideRunnerWindow": false,
-      "timeoutSeconds": 7200,
-      "key": "",
-      "menuOrder": 100,
-      "menuSeparatorBefore": false,
-      "hideFromInstanceActionsMenu": false,
-      "hideFromBottomMenu": false,
-      "menuPath": ""
-    }
-  ],
+  "files": [],
   "allowedChildren": []
 }

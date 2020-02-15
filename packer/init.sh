@@ -1,5 +1,4 @@
 
-
 function prepare_files() {
     log_info "Preparing files";
     cd $infraxys_packer_module_directory;

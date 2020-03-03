@@ -3,8 +3,16 @@
 
 ADMIN_VERSION="$(cat VERSION)";
 
+function admin_pull() {
+  docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+}
+
 function admin_reset() {
-    docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+  admin_pull;
+  admin_restart;
+}
+
+function admin_restart() {
     docker stop infraxys-admin;
     docker rm infraxys-admin;
     admin_up;

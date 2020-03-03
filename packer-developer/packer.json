@@ -5,7 +5,6 @@
     "ssh_bastion_private_key_file": "{{ env `ssh_bastion_private_key_file` }}",
     "ssh_bastion_username": "{{ env `ssh_bastion_username` }}",
     "encrypt_boot": "{{ env `encrypt_boot` }}",
-    "ami_name_prefix": "{{ env `ami_name_prefix` }}",
     "ami_description": "{{env `ami_description`}}",
     "packer_tmp_dir": "{{ env `packer_tmp_dir` }}",
     "packer_target_dir": "{{ env `packer_target_dir` }}",
@@ -16,12 +15,13 @@
     "ami_users": "{{env `ami_users`}}",
     "region": "{{ env `aws_region` }}",
     "iam_instance_profile": "{{ env `iam_instance_profile` }}",
-    "associate_public_ip_address": "{{ env `associate_public_ip_address` }}"
+    "associate_public_ip_address": "{{ env `associate_public_ip_address` }}",
+    "ami_name": "{{ env `ami_name_prefix` }}{{isotime \"20060102-030405\"}}"
   },
   "builders": [
     {
-      "name": "{{ user `ami_name_prefix`}}",
-      "ami_name": "{{ user `ami_name_prefix`}}-{{timestamp}}",
+      "name": "{{ user `ami_name` }}",
+      "ami_name": "{{ user `ami_name` }}",
       "ami_description": "{{ user `ami_description` }}",
       "type": "amazon-ebs",
       "communicator": "ssh",
@@ -42,13 +42,13 @@
       "ami_users": "{{ user `ami_users`}}",
       "ssh_timeout": "20m",
       "run_tags": {
-        "Name": "Packer build - {{ user `ami_name_prefix`}}-{{timestamp}}"
+        "Name": "Packer build - {{ user `ami_name`}}"
       },
       "run_volume_tags": {
-        "Name": "Packer build - {{ user `ami_name_prefix`}}-{{timestamp}}"
+        "Name": "Packer build - {{ user `ami_name`}}"
       },
       "tags": {
-        "Name": "{{ user `ami_name_prefix`}}-{{timestamp}}"
+        "Name": "{{ user `ami_name` }}"
       }
     }
   ],
@@ -56,19 +56,19 @@
     {
       "type": "shell",
       "inline": [
-        "mkdir -p {{user `packer_target_dir`}}",
-        "chmod a+w {{user `packer_target_dir`}}"
+        "mkdir -p {{ user `packer_target_dir` }}",
+        "chmod a+w {{ user `packer_target_dir` }}"
       ]
     },
     {
       "type": "file",
-      "source": "{{user `packer_tmp_dir`}}/",
-      "destination": "{{user `packer_target_dir`}}"
+      "source": "{{ user `packer_tmp_dir` }}/",
+      "destination": "{{ user `packer_target_dir` }}"
     },
     {
       "type": "shell",
       "inline": [
-        "cd {{user `packer_target_dir`}}",
+        "cd {{ user `packer_target_dir` }}",
         "./provision.sh"
       ]
     }

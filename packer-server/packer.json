@@ -13,7 +13,8 @@
     "vpc_id": "{{env `vpc_id`}}",
     "subnet_id": "{{env `subnet_id`}}",
     "ami_users": "{{env `ami_users`}}",
-    "region": "{{ env `aws_region` }}",
+    "region": "{{ env `instance_region` }}",
+    "copy_to_aws_regions": "{{ env `copy_to_aws_regions` }}",
     "iam_instance_profile": "{{ env `iam_instance_profile` }}",
     "associate_public_ip_address": "{{ env `associate_public_ip_address` }}",
     "ami_name": "{{ env `ami_name_prefix` }}{{isotime \"20060102-030405\"}}"
@@ -27,6 +28,7 @@
       "communicator": "ssh",
       "source_ami": "{{user `source_ami`}}",
       "region": "{{ user `region` }}",
+      "ami_regions": "{{ user `copy_to_aws_regions` }}",
       "instance_type": "t2.medium",
       "associate_public_ip_address": "{{ user `associate_public_ip_address` }}",
       "ssh_bastion_host": "{{ user `ssh_bastion_host`}}",

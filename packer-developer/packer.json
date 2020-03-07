@@ -1,6 +1,7 @@
 {
   "variables": {
     "ssh_username": "ubuntu",
+    "ami_groups": "{{ env `ami_groups` }}",
     "ssh_bastion_host": "{{ env `ssh_bastion_host` }}",
     "ssh_bastion_private_key_file": "{{ env `ssh_bastion_private_key_file` }}",
     "ssh_bastion_username": "{{ env `ssh_bastion_username` }}",
@@ -13,7 +14,8 @@
     "vpc_id": "{{env `vpc_id`}}",
     "subnet_id": "{{env `subnet_id`}}",
     "ami_users": "{{env `ami_users`}}",
-    "region": "{{ env `aws_region` }}",
+    "region": "{{ env `instance_region` }}",
+    "copy_to_aws_regions": "{{ env `copy_to_aws_regions` }}",
     "iam_instance_profile": "{{ env `iam_instance_profile` }}",
     "associate_public_ip_address": "{{ env `associate_public_ip_address` }}",
     "ami_name": "{{ env `ami_name_prefix` }}{{isotime \"20060102-030405\"}}"
@@ -27,6 +29,8 @@
       "communicator": "ssh",
       "source_ami": "{{user `source_ami`}}",
       "region": "{{ user `region` }}",
+      "ami_regions": "{{ user `copy_to_aws_regions` }}",
+      "ami_groups": "{{ user `ami_groups` }}",
       "instance_type": "t2.medium",
       "associate_public_ip_address": "{{ user `associate_public_ip_address` }}",
       "ssh_bastion_host": "{{ user `ssh_bastion_host`}}",
@@ -41,6 +45,14 @@
       "subnet_id": "{{ user `subnet_id`}}",
       "ami_users": "{{ user `ami_users`}}",
       "ssh_timeout": "20m",
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "volume_size": 50,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+        ],
       "run_tags": {
         "Name": "Packer build - {{ user `ami_name`}}"
       },

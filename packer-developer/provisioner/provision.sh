@@ -38,47 +38,47 @@ sudo docker run -i --rm \
   -v "$INFRAXYS_ROOT_DIR":/infraxys-root:rw \
   $IMAGE
 
-  echo "Setting owner of Infraxys files to $username:$groupname";
-  sudo chown -R "$username":"$groupname" "$INFRAXYS_ROOT_DIR";
+echo "Setting owner of Infraxys files to $username:$groupname";
+sudo chown -R "$username":"$groupname" "$INFRAXYS_ROOT_DIR";
 
-cd "$INFRAXYS_ROOT_DIR/bin";
+sudo -- sh -c 'export DEBIAN_FRONTEND=noninteractive;
+apt-get -qq -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade;
+cd /opt/infraxys/bin;
 
-sudo -- sh -c '. ./variables && docker-compose -f stack.yml pull';
+. ./variables && docker-compose -f stack.yml pull;
+./up.sh db; # first let the database initialize
 
+docker pull quay.io/jeroenmanders/infraxys-runner:$VERSION;
+docker pull quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest;
 
-# Do not install Ubuntu Desktop because it disabled network access somehow
+echo "Setting ubuntu-user password to infraxys.";
+echo "infraxys\ninfraxys" | passwd ubuntu
 
-#
-# echo "Retrieving localhost certificate.";
-# sudo docker cp infraxys-developer-web:/infraxys/certs/localhost.crt .;
-#
-# echo "Copying the localhost certificate to the ca-certificates directory.";
-# sudo mv localhost.crt /usr/local/share/ca-certificates/infraxys-localhost.crt;
-# sudo update-ca-certificates;
-#
-# echo "Enabling password authentication for the UI.";
-# sudo sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
-#
-# cd "$initial_dir"
-# echo "Installing Ubuntu Desktop and tightvncserver";
-# sudo -- sh -c 'DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade;
-# apt -qq update
-# #apt -qq -y install ubuntu-desktop
-# apt -qq -y install xfce4 xfce4-goodies
-# apt -qq -y install tightvncserver
-# '
-#
-# echo "Setting ubuntu-user password to 'infraxys'.";
-# echo -e "infraxys\ninfraxys" | sudo passwd ubuntu
-#
-# echo "Setting vnc-password to 'infraxys'.";
-# #sudo -- sh -c '
-# mkdir -p ~/.vnc;
-# echo "infraxys\ninfraxys" | vncpasswd -f > ~/.vnc/passwd;
-# chmod 0600 ~/.vnc/passwd;
-# #'
-#
-# sudo mv xstartup ~/.vnc/xstartup;
-# sudo chmod +x ~/.vnc/xstartup;
-# sudo cp vncserver.service /etc/systemd/system/vncserver@.service
-#
+curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+
+echo "Updating packages.";
+apt-get -qq update;
+echo "Installing lxde.";
+apt-get -qq -y install lxde >/dev/null; # this otherwise generates way too much logging
+echo "Installing Remote Desktop.";
+apt-get -qq -y install xrdp;
+
+echo "Installing Google Chrome".;
+apt-get -qq -y install google-chrome-stable;
+sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication yes/g" /etc/ssh/sshd_config;
+
+mkdir -p ~ubuntu/Desktop
+cat << EOF > ~ubuntu/Desktop/GoogleChrome
+[Desktop Entry]
+Name=Google Chrome
+Exec=/usr/bin/google-chrome-stable https://localhost https://infraxys.io
+StartupNotify=true
+Terminal=false
+Icon=google-chrome
+Type=Application
+EOF
+
+'
+
+echo "AMI provisioning done.";

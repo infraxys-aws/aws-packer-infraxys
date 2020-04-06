@@ -1,10 +1,8 @@
 
 . ../env;
 
-ADMIN_VERSION="$(cat VERSION)";
-
 function admin_pull() {
-  docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+  docker pull $ADMIN_IMAGE:$ADMIN_VERSION;
 }
 
 function admin_reset() {
@@ -28,7 +26,7 @@ function admin_up() {
         -v "$LOCAL_DIR/config":/opt/infraxys/config:rw \
         -v "$LOCAL_DIR/docker":/opt/infraxys/docker:rw \
         -p 8082:8082 \
-        quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
+        $ADMIN_IMAGE:$ADMIN_VERSION;
 
     docker network connect infraxys-vault infraxys-admin;
     docker start infraxys-admin;

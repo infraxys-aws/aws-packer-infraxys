@@ -1,10 +1,8 @@
 
 . ../env;
 
-VAULT_VERSION="$(cat VERSION)";
-
 function reset_vault() {
-    docker pull quay.io/jeroenmanders/infraxys-vault:$VAULT_VERSION;
+    docker pull $VAULT_VERSION:$VAULT_VERSION;
     docker stop infraxys-vault;
     docker rm infraxys-vault;
     vault_up;
@@ -17,5 +15,5 @@ function vault_up() {
       --name infraxys-vault \
       --cap-add IPC_LOCK \
       -v "$LOCAL_DIR/data/vault":/vault/data:rw \
-      quay.io/jeroenmanders/infraxys-vault:$VAULT_VERSION;
+      $VAULT_VERSION:$VAULT_VERSION;
 }

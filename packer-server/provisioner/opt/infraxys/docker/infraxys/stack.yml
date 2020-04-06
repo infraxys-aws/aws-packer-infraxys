@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   db:
-    image: quay.io/jeroenmanders/docker-infraxys-db:${VERSION}
+    image: ${DB_IMAGE}:${DB_VERSION}
     container_name: infraxys-db
     labels:
       io.infraxys.project: "infraxys-db"
@@ -20,7 +20,7 @@ services:
       - ${LOCAL_DIR}/data/mysql:/var/lib/mysql:rw
 
   tomcat:
-    image: quay.io/jeroenmanders/docker-infraxys-tomcat:${VERSION}
+    image: ${TOMCAT_IMAGE}:${TOMCAT_VERSION}
     container_name: infraxys-tomcat
     labels:
       io.infraxys.project: "infraxys"
@@ -50,14 +50,14 @@ services:
       SHOW_TOOLS_MENU: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${LOCAL_DIR}/config:/opt/infraxys/config:ro
+      - ${LOCAL_DIR}/config:/opt/infraxys/config:rw
       - ${LOCAL_DIR}/upload:/opt/infraxys/upload:rw
       - ${LOCAL_DIR}/modules:/opt/infraxys/modules:rw
       - ${LOCAL_DIR}/environments:/opt/infraxys/environments:rw
       - ${LOCAL_DIR}/work:/tempVolume:rw
 
   fluentd:
-    image: quay.io/jeroenmanders/docker-infraxys-fluentd:${VERSION}
+    image: ${FLUENTD_IMAGE}:${FLUENTD_VERSION}
     container_name: infraxys-fluentd
     labels:
       io.infraxys.project: "infraxys"
@@ -70,7 +70,7 @@ services:
       - ${LOCAL_DIR}/logs/config:/fluentd/etc:ro
 
   oauth2:
-    image: quay.io/jeroenmanders/oauth2-proxy:5.0.0
+    image: ${OAUTH_IMAGE}:${OAUTH_VERSION}
     container_name: infraxys-oauth2
     labels:
       io.infraxys.project: "infraxys"
@@ -82,7 +82,7 @@ services:
       -  ${LOCAL_DIR}/config/oauth2-proxy/oauth2_proxy.cfg:/etc/oauth2_proxy.cfg:ro
 
   web:
-    image: quay.io/jeroenmanders/infraxys-web:latest
+    image: ${WEB_IMAGE}:${WEB_VERSION}
     container_name: infraxys-web
     labels:
       io.infraxys.project: "infraxys"

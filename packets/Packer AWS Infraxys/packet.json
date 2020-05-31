@@ -1,16 +1,17 @@
 {
   "version": "1.0",
+  "id": "752cc4d0-3a7e-4edd-b979-33d37cb4ca24",
   "label": "Packer - Infraxys 1.4 - %ami_name_prefix%",
   "type": "PACKER_AMI",
   "autoExpand": true,
   "skipEveryInstanceFiles": false,
   "limitToAllowedChildren": false,
   "autoGenerate": false,
-  "inheritFilesFromPacketGuid": "github.com\\infraxys-aws\\aws-packer\\master\\packer helper functions",
   "key": "",
   "infoHtml": "",
   "attributes": [
     {
+      "id": "cb9f0d52-94eb-49a0-ac8f-7a2dc2473e95",
       "name": "ami_description",
       "caption": "AMI description",
       "type": "java.lang.String",
@@ -24,7 +25,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": true,
       "cloneAttribute": true,
@@ -34,6 +35,7 @@
       "defaultValue": "Infraxys 1.4"
     },
     {
+      "id": "86a9d998-5a61-40d7-8fe4-221f46e961ca",
       "name": "ami_groups",
       "caption": "AMI groups",
       "type": "java.lang.String",
@@ -44,9 +46,10 @@
       "required": false,
       "isPartOfKey": false,
       "listOfValues": "all",
+      "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": true,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -56,6 +59,7 @@
       "defaultValue": ""
     },
     {
+      "id": "a5d10560-f0e7-4f0c-bb30-e3c085e16fff",
       "name": "ami_name_prefix",
       "caption": "AMI name prefix",
       "type": "java.lang.String",
@@ -69,7 +73,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": true,
       "cloneAttribute": true,
@@ -79,6 +83,7 @@
       "defaultValue": ""
     },
     {
+      "id": "bc38d633-3095-4d4d-a7ed-1b8ed4c9f13d",
       "name": "associate_public_ip_address",
       "caption": "Public IP for Builder Instance",
       "type": "java.lang.Boolean",
@@ -92,7 +97,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -102,6 +107,7 @@
       "defaultValue": "0"
     },
     {
+      "id": "803da92d-3a10-4392-a274-37b905fbb60c",
       "name": "copy_to_aws_regions",
       "caption": "Copy to AWS regions",
       "type": "java.lang.String",
@@ -112,9 +118,10 @@
       "required": true,
       "isPartOfKey": false,
       "listOfValues": "",
+      "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -124,6 +131,7 @@
       "defaultValue": "us-east-1"
     },
     {
+      "id": "cef86fb8-5875-4ecd-8bf8-a26bd84020b2",
       "name": "debug_mode",
       "caption": "Debug mode",
       "type": "java.lang.Boolean",
@@ -137,7 +145,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -147,6 +155,7 @@
       "defaultValue": "0"
     },
     {
+      "id": "6986bbae-7d60-4c69-a9a4-12d892c0427e",
       "name": "do_encrypt_boot",
       "caption": "Encrypt boot volume",
       "type": "java.lang.Boolean",
@@ -160,7 +169,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -170,6 +179,31 @@
       "defaultValue": "0"
     },
     {
+      "id": "dcaf4b1b-12da-4ab4-9f3a-8e11761d81b9",
+      "name": "image_owners",
+      "caption": "AMI owners",
+      "type": "java.lang.String",
+      "formColumn": 1,
+      "formOrder": 1350,
+      "visibility": "ALWAYS VISIBLE",
+      "writability": "ALWAYS",
+      "required": false,
+      "isPartOfKey": false,
+      "listOfValues": "self,amazon",
+      "cacheMinutes": 0,
+      "referenceFilter": "",
+      "referenceValueAttributeName": "",
+      "referenceChildIdFilter": "",
+      "newItemsAllowed": true,
+      "parseWithVelocity": false,
+      "cloneAttribute": true,
+      "inputPrompt": "",
+      "tooltip": "\u003cp\u003eApplicable when searching the AMI by name\u003c/p\u003e\n\u003cp\u003eList of AMI owners to limit search. At least 1 value must be specified. Valid values: an AWS account ID, self (the current account), or an AWS owner alias (e.g. amazon, aws-marketplace, microsoft)\u003c/p\u003e",
+      "scope": "Instance",
+      "defaultValue": ""
+    },
+    {
+      "id": "c6f6e5ad-f0b8-4693-ba14-b72d56703b35",
       "name": "instance_region",
       "caption": "instance_region",
       "type": "java.lang.String",
@@ -180,9 +214,10 @@
       "required": true,
       "isPartOfKey": false,
       "listOfValues": "",
+      "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": true,
       "cloneAttribute": true,
@@ -192,6 +227,7 @@
       "defaultValue": "$instance.parent.getAttribute(\"aws_region\")"
     },
     {
+      "id": "6678221a-70bb-4fcc-8049-267506fe6d80",
       "name": "packer_directory",
       "caption": "Packer edition",
       "type": "java.lang.String",
@@ -202,9 +238,10 @@
       "required": true,
       "isPartOfKey": false,
       "listOfValues": "packer-server,packer-developer",
+      "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,
@@ -214,6 +251,7 @@
       "defaultValue": "packer-server"
     },
     {
+      "id": "473527c8-8c45-488e-b1aa-075d8f2a5c9d",
       "name": "source_ami",
       "caption": "Base AMI",
       "type": "java.lang.String",
@@ -227,7 +265,7 @@
       "cacheMinutes": 0,
       "referenceFilter": "",
       "referenceValueAttributeName": "",
-      "referenceChildGuidFilter": "",
+      "referenceChildIdFilter": "",
       "newItemsAllowed": false,
       "parseWithVelocity": false,
       "cloneAttribute": true,

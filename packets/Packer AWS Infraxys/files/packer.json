@@ -1,0 +1,91 @@
+#set ($sourceAmi = $instance.getAttribute("source_ami"))
+{
+  "min_packer_version": "1.5.0",
+  "variables": {
+    "ssh_username": "ubuntu",
+    "ssh_bastion_host": "{{ env `ssh_bastion_host` }}",
+    "ssh_bastion_private_key_file": "{{ env `ssh_bastion_private_key_file` }}",
+    "ssh_bastion_username": "{{ env `ssh_bastion_username` }}",
+    "encrypt_boot": "{{ env `encrypt_boot` }}",
+    "ami_description": "{{env `ami_description`}}",
+    "packer_tmp_dir": "{{ env `packer_tmp_dir` }}",
+    "packer_target_dir": "{{ env `packer_target_dir` }}",
+    "security_group_id": "{{env `security_group_id`}}",
+    "vpc_id": "{{env `vpc_id`}}",
+    "subnet_id": "{{env `subnet_id`}}",
+    "ami_users": "{{env `ami_users`}}",
+    "region": "{{ env `instance_region` }}",
+    "copy_to_aws_regions": "{{ env `copy_to_aws_regions` }}",
+    "iam_instance_profile": "{{ env `iam_instance_profile` }}",
+    "associate_public_ip_address": "{{ env `associate_public_ip_address` }}",
+    "ami_name": "{{ env `ami_name_prefix` }}{{isotime \"20060102-030405\"}}"
+  },
+  "builders": [
+    {
+      "name": "{{ user `ami_name` }}",
+      "ami_name": "{{ user `ami_name` }}",
+      "ami_description": "{{ user `ami_description` }}",
+      "type": "amazon-ebs",
+      "communicator": "ssh",
+#if ($sourceAmi.toLowerCase().startsWith("ami-"))
+      "source_ami": "$sourceAmi",
+#else
+	  "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "$sourceAmi",
+           "root-device-type": "ebs"
+        },
+          "owners": ["$instance.getAttribute("image_owners")"],
+          "most_recent": true
+      },
+#end         
+      "region": "{{ user `region` }}",
+      "ami_regions": "{{ user `copy_to_aws_regions` }}",
+      "instance_type": "t2.medium",
+      "associate_public_ip_address": "{{ user `associate_public_ip_address` }}",
+      "ssh_bastion_host": "{{ user `ssh_bastion_host`}}",
+      "ssh_bastion_private_key_file": "{{ user `ssh_bastion_private_key_file`}}",
+      "ssh_bastion_username": "{{ user `ssh_bastion_username`}}",
+      "encrypt_boot": "{{ user `encrypt_boot` }}",
+      "ssh_interface": "private_ip",
+      "iam_instance_profile": "{{ user `iam_instance_profile` }}",
+      "ssh_username": "{{ user `ssh_username`}}",
+      "security_group_id": "{{ user `security_group_id`}}",
+      "vpc_id": "{{ user `vpc_id`}}",
+      "subnet_id": "{{ user `subnet_id`}}",
+      "ami_users": "{{ user `ami_users`}}",
+      "ssh_timeout": "20m",
+      "run_tags": {
+        "Name": "Packer build - {{ user `ami_name`}}"
+      },
+      "run_volume_tags": {
+        "Name": "Packer build - {{ user `ami_name`}}"
+      },
+      "tags": {
+        "Name": "{{ user `ami_name` }}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p {{ user `packer_target_dir` }}",
+        "chmod a+w {{ user `packer_target_dir` }}"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{ user `packer_tmp_dir` }}/",
+      "destination": "{{ user `packer_target_dir` }}"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cd {{ user `packer_target_dir` }}",
+        "./provision.sh"
+      ]
+    }
+  ]
+}

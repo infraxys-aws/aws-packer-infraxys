@@ -33,21 +33,19 @@ services:
     restart: always
     depends_on:
       - db
-    extra_hosts:
-      - "provisioning-server:127.0.0.1"
     environment:
       CATALINA_OPTS: -Xmx1024m -Xms512m -XX:ThreadStackSize=500 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses -Dproperties.file=/usr/local/tomcat/conf/infraxys.properties -Dlog4j.configuration=file:/usr/local/tomcat/conf/log4j.xml
       SERVER_NAME: ${SERVER_NAME}
       PARENT_OS: "LINUX"
-      SERVER_REQUIRES_PROFILE: ${SERVER_REQUIRES_PROFILE}
+      SERVER_REQUIRES_TEAM: ${SERVER_REQUIRES_TEAM}
       INFRAXYS_MODE: "server"
       DISABLE_ACE_EDITOR: "false"
-      HOST_ENVIRONMENTS_DIR: "${LOCAL_DIR}/environments"
-      HOST_MODULES_DIR: "${LOCAL_DIR}/modules"
-      HOST_WORK_DIR: "${LOCAL_DIR}/work"
+      HOST_INFRAXYS_DIR: "${LOCAL_DIR}"
       INFRAXYS_MODULE_URL: "git@github.com:infraxys-modules/infraxys-core.git"
       INFRAXYS_MODULE_BRANCH: "master"
       SHOW_TOOLS_MENU: "true"
+      SHOW_CORE_CLASS_MENUS: "false"
+      ALLOW_CUSTOM_DOCKER_IMAGES: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${LOCAL_DIR}/config:/opt/infraxys/config:rw

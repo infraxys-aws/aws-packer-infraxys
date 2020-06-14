@@ -1,0 +1,1 @@
+$instance.getAttribute("db_version")

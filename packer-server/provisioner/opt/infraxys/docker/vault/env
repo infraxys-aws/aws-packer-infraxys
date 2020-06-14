@@ -2,7 +2,7 @@
 . ../env;
 
 function reset_vault() {
-    docker pull $VAULT_VERSION:$VAULT_VERSION;
+    docker pull $VAULT_IMAGE:$VAULT_VERSION;
     docker stop infraxys-vault;
     docker rm infraxys-vault;
     vault_up;
@@ -15,5 +15,5 @@ function vault_up() {
       --name infraxys-vault \
       --cap-add IPC_LOCK \
       -v "$LOCAL_DIR/data/vault":/vault/data:rw \
-      $VAULT_VERSION:$VAULT_VERSION;
+      $VAULT_IMAGE:$VAULT_VERSION;
 }

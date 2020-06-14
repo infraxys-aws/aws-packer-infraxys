@@ -25,15 +25,24 @@ function reset() {
 }
 
 function pull() {
-    docker pull quay.io/jeroenmanders/docker-infraxys-db:${VERSION};
-    docker pull quay.io/jeroenmanders/docker-infraxys-tomcat:${VERSION};
-    docker pull quay.io/jeroenmanders/docker-infraxys-fluentd:${VERSION};
-    docker pull quay.io/jeroenmanders/infraxys-runner:${VERSION};
-    docker pull quay.io/jeroenmanders/oauth2-proxy:5.0.0;
-    docker pull quay.io/jeroenmanders/infraxys-web:latest;
+    echo "Pulling quay.io/jeroenmanders/docker-infraxys-db:$DB_VERSION";
+    docker pull quay.io/jeroenmanders/docker-infraxys-db:$DB_VERSION;
+    echo "Pulling quay.io/jeroenmanders/docker-infraxys-tomcat:$TOMCAT_VERSION";
+    docker pull quay.io/jeroenmanders/docker-infraxys-tomcat:$TOMCAT_VERSION;
+    echo "Pulling quay.io/jeroenmanders/docker-infraxys-fluentd:$FLUENTD_VERSION";
+    docker pull quay.io/jeroenmanders/docker-infraxys-fluentd:$FLUENTD_VERSION;
+    echo "Pulling quay.io/jeroenmanders/infraxys-runner:latest";
+    docker pull quay.io/jeroenmanders/infraxys-runner:latest;
+    echo "Pulling quay.io/jeroenmanders/oauth2-proxy:$OAUTH_VERSION";
+    docker pull quay.io/jeroenmanders/oauth2-proxy:$OAUTH_VERSION;
+    echo "Pulling quay.io/jeroenmanders/infraxys-web:$WEB_VERSION";
+    docker pull quay.io/jeroenmanders/infraxys-web:$WEB_VERSION;
+    echo "Pulling quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest";
     docker pull quay.io/jeroenmanders/infraxys-provisioning-server:ubuntu-full-18.04-latest;
-    docker pull quay.io/jeroenmanders/infraxys-vault:latest;
-    docker pull quay.io/jeroenmanders/infraxys-admin:latest;
+    echo "Pulling quay.io/jeroenmanders/infraxys-vault:$VAULT_VERSION";
+    docker pull quay.io/jeroenmanders/infraxys-vault:$VAULT_VERSION;
+    echo "Pulling quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION";
+    docker pull quay.io/jeroenmanders/infraxys-admin:$ADMIN_VERSION;
 }
 
 mkdir -p "$LOCAL_DIR/run";

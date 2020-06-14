@@ -2,17 +2,14 @@
 
 set -eo pipefail;
 
-#echo "Change ssh config"
-#sudo cp sshd_config /etc/ssh/sshd_config;
-
 echo "Creating directory /opt/infraxys";
 sudo mkdir -p /opt/infraxys;
 sudo chown ubuntu:ubuntu /opt/infraxys;
 sudo mv opt/infraxys/* /opt/infraxys/;
 
-echo "Creating directory /opt/infraxys-provisioning-server";
-sudo mkdir -p /opt/infraxys-provisioning-server/;
-sudo mv opt/infraxys-provisioning-server/* /opt/infraxys-provisioning-server/;
+#echo "Creating directory /opt/infraxys-provisioning-server";
+#sudo mkdir -p /opt/infraxys-provisioning-server/;
+#sudo mv opt/infraxys-provisioning-server/* /opt/infraxys-provisioning-server/;
 sudo mkdir -p /opt/infraxys/logs/fluentd;
 sudo chown ubuntu:ubuntu /opt/infraxys/logs/fluentd;
 
@@ -20,7 +17,9 @@ sudo mkdir /opt/infraxys/data;
 sudo mkdir /opt/infraxys/data/vault;
 sudo mkdir /opt/infraxys/data/mysql;
 
-echo "Pulling latest Docker images"
+sudo cp *_VERSION /opt/infraxys/config/vars/
+
+echo "Pulling Docker images"
 cd /opt/infraxys/docker/infraxys;
 sudo ./pull.sh;
 

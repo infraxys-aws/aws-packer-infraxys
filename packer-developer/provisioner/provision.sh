@@ -2,9 +2,6 @@
 
 set -eo pipefail;
 
-#echo "Change ssh config"
-#sudo cp sshd_config /etc/ssh/sshd_config;
-
 initial_dir="$(pwd)";
 export INFRAXYS_ROOT_DIR="/opt/infraxys";
 

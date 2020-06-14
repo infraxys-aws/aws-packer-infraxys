@@ -1,0 +1,1 @@
+$instance.getAttribute("vault_version")

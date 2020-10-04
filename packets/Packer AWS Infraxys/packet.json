@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "id": "752cc4d0-3a7e-4edd-b979-33d37cb4ca24",
-  "label": "Packer - Infraxys %infraxys_build_version% - %ami_name_prefix%",
+  "label": "Packer - Infraxys %tomcat_version% - %ami_name_prefix%",
   "type": "PACKER_AMI",
   "autoExpand": true,
   "skipEveryInstanceFiles": false,

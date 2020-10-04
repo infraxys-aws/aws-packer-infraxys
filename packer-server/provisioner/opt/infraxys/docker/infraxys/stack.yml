@@ -52,6 +52,7 @@ services:
       - ${LOCAL_DIR}/upload:/opt/infraxys/upload:rw
       - ${LOCAL_DIR}/modules:/opt/infraxys/modules:rw
       - ${LOCAL_DIR}/environments:/opt/infraxys/environments:rw
+      - ${LOCAL_DIR}/cache:/opt/infraxys/cache:ro
       - ${LOCAL_DIR}/work:/tempVolume:rw
 
   fluentd:
@@ -63,6 +64,8 @@ services:
     networks:
       - infraxys-log
     restart: always
+    ports:
+      - 24224:24224
     volumes:
       - ${LOCAL_DIR}/logs/fluentd:/var/log/fluent:rw
       - ${LOCAL_DIR}/logs/config:/fluentd/etc:ro

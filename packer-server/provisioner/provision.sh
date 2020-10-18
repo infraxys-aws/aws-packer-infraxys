@@ -11,7 +11,7 @@ sudo mv opt/infraxys/* /opt/infraxys/;
 #sudo mkdir -p /opt/infraxys-provisioning-server/;
 #sudo mv opt/infraxys-provisioning-server/* /opt/infraxys-provisioning-server/;
 sudo mkdir -p /opt/infraxys/logs/fluentd;
-sudo chown ubuntu:ubuntu /opt/infraxys/logs/fluentd;
+sudo chown -R 100:ubuntu /opt/infraxys/logs/fluentd; # User "fluent" has id 100 in the Docker container
 
 sudo mkdir /opt/infraxys/data;
 sudo mkdir /opt/infraxys/data/vault;
